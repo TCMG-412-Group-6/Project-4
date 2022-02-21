@@ -29,6 +29,8 @@ if not exists('log_copy.log'):
 #regex = '\[(.{11}):(.{8}) (?:.*?)\] \"(?:.{3}) (.*?) (?:.*?)\" (\d{3}) (\d+)'
 
 sixmonths= 0
+fail_counter = 0
+redi_counter = 0
 count= 0
 
 ##this takes a long time to run using regex, I wonder how I can cut it down?
@@ -45,6 +47,12 @@ for lines in sesame:
         parsed_time = datetime.strptime(parse.group(2), '%H:%M:%S').time()
         parsed_filename = parse.group(3)
         parsed_code = parse.group(4)
+
+
+        if parsed_code.startswith('4'): #I don't think .startswith is valid.
+            fail_counter += 1
+        if parsed_code.startswith('3'):
+            redi_counter += 1
 ## There absolutely has to be a better way to sort and iterate the monthly logs
 ## The repeat execution protection I tried to implement breaks the writing process - only 1 entry per file, so commented out for now.
     #if not exists('1 Jan log.log'):
@@ -89,6 +97,7 @@ for lines in sesame:
             f.write(lines)
     
     
+
 ##this bit is just testing the new methods applied to the first group project    
     startdate = datetime(year=1995, month=4, day=12).date()
     if parsed_date >= startdate:
@@ -96,7 +105,6 @@ for lines in sesame:
 sesame.close()
 
 
-##can safely ignore this
 counter = open("log_copy.log", "r")
 content = counter.read()
 numlines = content.split('\n')
@@ -104,8 +112,12 @@ for i in numlines:
     if i:
         count+=1
 counter.close()
-      
+
+#percent_fail = count/fail_counter * 100
 print("Total Requests Made 6 months starting April 11th, 1995 - Octobober 11th 1995: ", sixmonths)
 print("Total Requests from the logfile: ", count)
+print("Total Requests that ended in Failure codes:", fail_counter) #this only returned 2, which is definitely wrong.
+print("Total Requests that ended in Redirects:", redi_counter) #this returned 98432 redirects, which *could* be correct.
+#print("Percentage of Requests that failed:", percent_fail, '\%')
 
 
