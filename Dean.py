@@ -12,6 +12,8 @@ import re
 ##Main Program
 
 #this skips the process of redownloading the log file if it already exists in the directory.
+#for whatever reason, it doesn't want to save the log file inside the local github repo - 
+#instead it saves the file one directory up (for me)
 if not os.path.exists('log_copy.log'):
     URL_PATH = 'https://s3.amazonaws.com/tcmg476/http_access_log'
     local_log = 'log_copy.log'
@@ -33,21 +35,22 @@ count= 0
 sesame = open("log_copy.log", 'r')
 for lines in sesame:
     parse = re.search(r'\[(.{11}):(.{8}) (.*?)\] \"(.*?)\" (\d{3}) (\d+)', lines)
-    #parse.group(1)=date;
+    #parse.group(1)=date; <--
     #group(2)=time; 
     #group(3)=timezone - important for anything?; 
-    #group(4)=everything in ""(need to parse it better);
-    #group(5)=error codes!;
+    #group(4)=everything in ""(need to parse it better); <--
+    #group(5)=error codes!; <--
     #group(6)=whatever the end numbers mean;
     if parse:
         parsed_date = datetime.strptime(parse.group(1), '%d/%b/%Y').date()
+    #this bit is just testing the new methods applied to the first group project    
     startdate = datetime(year=1995, month=4, day=12).date()
     if parsed_date >= startdate:
            sixmonths += 1
 sesame.close()
 
 
-##
+##can safely ignore this
 counter = open("log_copy.log", "r")
 content = counter.read()
 numlines = content.split('\n')
