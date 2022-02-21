@@ -6,7 +6,7 @@
 from threading import local
 from urllib.request import urlretrieve
 from datetime import date, datetime, timedelta
-import os
+from os.path import abspath, exists
 import re
 
 ##Main Program
@@ -14,14 +14,14 @@ import re
 #this skips the process of redownloading the log file if it already exists in the directory.
 #for whatever reason, it doesn't want to save the log file inside the local github repo - 
 #instead it saves the file one directory up (for me)
-if not os.path.exists('log_copy.log'):
+if not exists('log_copy.log'):
     URL_PATH = 'https://s3.amazonaws.com/tcmg476/http_access_log'
     local_log = 'log_copy.log'
     print('Fetching Apache log file')
     # I liked this progress bar implementation, thanks for sharing!
     local_log, headers = urlretrieve(URL_PATH, local_log, lambda x,y,z: print('.', end='', flush=True) if x % 100 == 0 else False)
     print('Done!' )
-    print('Created copy of log file named \'local_copy.log\' \nSaved at:', os.path.abspath(local_log), '\n')
+    print('Created copy of log file named \'local_copy.log\' \nSaved at:', abspath(local_log), '\n')
 
 
 ##trying regex
@@ -47,43 +47,43 @@ for lines in sesame:
         parsed_code = parse.group(4)
 ## There absolutely has to be a better way to sort and iterate the monthly logs
 ## The repeat execution protection I tried to implement breaks the writing process - only 1 entry per file, so commented out for now.
-    #if not os.path.exists('1 Jan log.log'):
+    #if not exists('1 Jan log.log'):
         if datetime(year=1995, month=1, day=1).date() <= parsed_date < datetime(year=1995, month=2, day=1).date():
             f = open('1 Jan log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('2 Feb log.log'):
+    #if not exists('2 Feb log.log'):
         if datetime(year=1995, month=2, day=1).date() <= parsed_date < datetime(year=1995, month=3, day=1).date():
             f = open('2 Feb log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('3 Mar log.log'):
+    #if not exists('3 Mar log.log'):
         if datetime(year=1995, month=3, day=1).date() <= parsed_date < datetime(year=1995, month=4, day=1).date():
             f = open('3 Mar log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('4 Apr log.log'):
+    #if not exists('4 Apr log.log'):
         if datetime(year=1995, month=4, day=1).date() <= parsed_date < datetime(year=1995, month=5, day=1).date():
             f = open('4 Apr log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('5 May log.log'):
+    #if not exists('5 May log.log'):
         if datetime(year=1995, month=5, day=1).date() <= parsed_date < datetime(year=1995, month=6, day=1).date():
             f = open('5 May log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('6 Jun log.log'):
+    #if not exists('6 Jun log.log'):
         if datetime(year=1995, month=6, day=1).date() <= parsed_date < datetime(year=1995, month=7, day=1).date():
             f = open('6 Jun log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('7 Jul log.log'):
+    #if not exists('7 Jul log.log'):
         if datetime(year=1995, month=7, day=1).date() <= parsed_date < datetime(year=1995, month=8, day=1).date():
             f = open('7 Jul log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('8 Aug log.log'):
+    #if not exists('8 Aug log.log'):
         if datetime(year=1995, month=8, day=1).date() <= parsed_date < datetime(year=1995, month=9, day=1).date():
             f = open('8 Aug log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('9 Sep log.log'):
+    #if not exists('9 Sep log.log'):
         if datetime(year=1995, month=9, day=1).date() <= parsed_date < datetime(year=1995, month=10, day=1).date():
             f = open('9 Sep log.log', 'a')
             f.write(lines)
-    #if not os.path.exists('10 Oct log.log'):
+    #if not exists('10 Oct log.log'):
         if datetime(year=1995, month=10, day=1).date() <= parsed_date < datetime(year=1995, month=11, day=1).date():
             f = open('10 Oct log.log', 'a')
             f.write(lines)
