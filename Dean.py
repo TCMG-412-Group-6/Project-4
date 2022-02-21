@@ -39,10 +39,57 @@ for lines in sesame:
     #parse.group(2)=time; 
     #parse.group(3)=filename+file extension <--
     #parse.group(4)=error codes!; <--
-    #parse.group(6)=whatever the end numbers mean; (not sure if important?)
+    #parse.group(5)=whatever the end numbers mean; (not sure if important?)
     if parse:
         parsed_date = datetime.strptime(parse.group(1), '%d/%b/%Y').date()
-    #this bit is just testing the new methods applied to the first group project    
+        parsed_time = datetime.strptime(parse.group(2), '%H:%M:%S').time()
+        parsed_filename = parse.group(3)
+        parsed_code = parse.group(4)
+## There absolutely has to be a better way to sort and iterate the monthly logs
+## The repeat execution protection I tried to implement breaks the writing process - only 1 entry per file, so commented out for now.
+    #if not os.path.exists('1 Jan log.log'):
+        if datetime(year=1995, month=1, day=1).date() <= parsed_date < datetime(year=1995, month=2, day=1).date():
+            f = open('1 Jan log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('2 Feb log.log'):
+        if datetime(year=1995, month=2, day=1).date() <= parsed_date < datetime(year=1995, month=3, day=1).date():
+            f = open('2 Feb log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('3 Mar log.log'):
+        if datetime(year=1995, month=3, day=1).date() <= parsed_date < datetime(year=1995, month=4, day=1).date():
+            f = open('3 Mar log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('4 Apr log.log'):
+        if datetime(year=1995, month=4, day=1).date() <= parsed_date < datetime(year=1995, month=5, day=1).date():
+            f = open('4 Apr log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('5 May log.log'):
+        if datetime(year=1995, month=5, day=1).date() <= parsed_date < datetime(year=1995, month=6, day=1).date():
+            f = open('5 May log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('6 Jun log.log'):
+        if datetime(year=1995, month=6, day=1).date() <= parsed_date < datetime(year=1995, month=7, day=1).date():
+            f = open('6 Jun log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('7 Jul log.log'):
+        if datetime(year=1995, month=7, day=1).date() <= parsed_date < datetime(year=1995, month=8, day=1).date():
+            f = open('7 Jul log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('8 Aug log.log'):
+        if datetime(year=1995, month=8, day=1).date() <= parsed_date < datetime(year=1995, month=9, day=1).date():
+            f = open('8 Aug log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('9 Sep log.log'):
+        if datetime(year=1995, month=9, day=1).date() <= parsed_date < datetime(year=1995, month=10, day=1).date():
+            f = open('9 Sep log.log', 'a')
+            f.write(lines)
+    #if not os.path.exists('10 Oct log.log'):
+        if datetime(year=1995, month=10, day=1).date() <= parsed_date < datetime(year=1995, month=11, day=1).date():
+            f = open('10 Oct log.log', 'a')
+            f.write(lines)
+    
+    
+##this bit is just testing the new methods applied to the first group project    
     startdate = datetime(year=1995, month=4, day=12).date()
     if parsed_date >= startdate:
            sixmonths += 1
