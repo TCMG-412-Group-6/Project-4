@@ -1,6 +1,6 @@
 #Andrew Dean
-#TCMG 412 500 UIN - 230007137
-#Program Title: Log Parser
+#TCMG 412 500
+#Program Title: Log Parser 2: Electric Boogaloo
 
 #Functions
 from threading import local
