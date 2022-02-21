@@ -26,7 +26,7 @@ if not os.path.exists('log_copy.log'):
 
 ##trying regex
 #line = 'local - - [24/Oct/1994:13:41:41 -0600] "GET index.html HTTP/1.0" 200 150'
-#regex = '\[(.{11}):(.{8}) (.*?)\] \"(.*?)\" (\d{3}) (\d+)'
+#regex = '\[(.{11}):(.{8}) (?:.*?)\] \"(?:.{3}) (.*?) (?:.*?)\" (\d{3}) (\d+)'
 
 sixmonths= 0
 count= 0
@@ -34,13 +34,12 @@ count= 0
 ##this takes a long time to run using regex, I wonder how I can cut it down?
 sesame = open("log_copy.log", 'r')
 for lines in sesame:
-    parse = re.search(r'\[(.{11}):(.{8}) (.*?)\] \"(.*?)\" (\d{3}) (\d+)', lines)
+    parse = re.search(r'\[(.{11}):(.{8}) (?:.*?)\] \"(?:.{3}) (.*?) (?:.*?)\" (\d{3}) (\d+)', lines)
     #parse.group(1)=date; <--
-    #group(2)=time; 
-    #group(3)=timezone - important for anything?; 
-    #group(4)=everything in ""(need to parse it better); <--
-    #group(5)=error codes!; <--
-    #group(6)=whatever the end numbers mean;
+    #parse.group(2)=time; 
+    #parse.group(3)=filename+file extension <--
+    #parse.group(4)=error codes!; <--
+    #parse.group(6)=whatever the end numbers mean; (not sure if important?)
     if parse:
         parsed_date = datetime.strptime(parse.group(1), '%d/%b/%Y').date()
     #this bit is just testing the new methods applied to the first group project    
