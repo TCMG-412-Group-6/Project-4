@@ -11,6 +11,7 @@ import re
 
 ##Main Program
 
+#this skips the process of redownloading the log file if it already exists in the directory.
 if not os.path.exists('log_copy.log'):
     URL_PATH = 'https://s3.amazonaws.com/tcmg476/http_access_log'
     local_log = 'log_copy.log'
