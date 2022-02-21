@@ -49,9 +49,9 @@ for lines in sesame:
         parsed_code = parse.group(4)
 
 
-        if parsed_code.startswith('4'): #I don't think .startswith is valid.
+        if parsed_code == re.match(r'4\d\d', parsed_code): #I don't think .startswith is valid.
             fail_counter += 1
-        if parsed_code.startswith('3'):
+        if parsed_code == re.match(r'3\d\d', parsed_code): #trying re.match, but it isn't working.
             redi_counter += 1
 ## There absolutely has to be a better way to sort and iterate the monthly logs
 ## The repeat execution protection I tried to implement breaks the writing process - only 1 entry per file, so commented out for now.
@@ -113,11 +113,13 @@ for i in numlines:
         count+=1
 counter.close()
 
-#percent_fail = count/fail_counter * 100
+percent_fail = float(fail_counter)/float(count) * 100
+percent_redi = float(redi_counter)/float(count) * 100
 print("Total Requests Made 6 months starting April 11th, 1995 - Octobober 11th 1995: ", sixmonths)
 print("Total Requests from the logfile: ", count)
 print("Total Requests that ended in Failure codes:", fail_counter) #this only returned 2, which is definitely wrong.
 print("Total Requests that ended in Redirects:", redi_counter) #this returned 98432 redirects, which *could* be correct.
-#print("Percentage of Requests that failed:", percent_fail, '\%')
+print("Percentage of Requests that failed:", percent_fail, '%')
+print("Percentage of Requests that redirected:", percent_redi, '%')
 
 
