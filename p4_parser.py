@@ -79,11 +79,10 @@ for line in log_file:
     if re.search(sections[6]) == "4**":
         client_errors =+ 1
 # Attempting to find the most/least common file
-    counter = Counter(log_file)
-    most_requested = counter.most_common(sections[5])
+    counter = Counter(log_file(sections[5]))
+    most_requested = counter.most_common(1)[0]
 # From what I have read the negative at end is suppose to give the opposite
-    least_requested = counter.most_common(sections[5])[-1] 
-    
+    least_requested = counter.most_common(1)[0][-1]
 
 
 
