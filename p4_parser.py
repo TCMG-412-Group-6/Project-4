@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import urllib.request
 import re
+from collections import Counter
 
 
 # Downlad log file if it does not exist already
@@ -77,8 +78,14 @@ for line in log_file:
         redirection_codes =+ 1
     if re.search(sections[6]) == "4**":
         client_errors =+ 1
+# Attempting to find the most/least common file
+    counter = Counter(log_file)
+    most_requested = counter.most_common(sections[5])
+# From what I have read the negative at end is suppose to give the opposite
+    least_requested = counter.most_common(sections[5])[-1] 
+    
 
-        
+
 
 percent_redirected = int(redirection_codes)/int(total_count)*100
 percent_client_errors = int(client_errors)/int(total_count)*100
@@ -88,5 +95,7 @@ print("The total requests for each month : /n", months)
 print("The total requests for each day of the week: /n", days)
 print("The percentage of redirected requests: ", percent_redirected)
 print("The percentage of requests that led to client error: ", percent_client_errors)
+print("The most request file was: ", most_requested)
+print("The most request file was: ", least_requested)
 
 log_file.close()
