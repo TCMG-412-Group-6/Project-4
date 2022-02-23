@@ -80,9 +80,9 @@ for line in log_file:
         client_errors =+ 1
 # Attempting to find the most/least common file
     counter = Counter(log_file(sections[5]))
-    most_requested = counter.most_common(1)[0]
+    most_requested = counter.most_common(1)[0][0]
 # From what I have read the negative at end is suppose to give the opposite
-    least_requested = counter.most_common(1)[0][-1]
+    least_requested = counter.most_common(1)[0][0][-1]
 
 
 
