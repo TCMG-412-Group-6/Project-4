@@ -78,13 +78,7 @@ for line in log_file:
     if re.search(sections[6]) == "4**":
         client_errors =+ 1
 
-   # Might delete if it messes things up
-# trying to integrate some of Dean's code with mine
-#requests = log_file.read()
-#numlines = requests.split("\n")
-#for i in numlines:
- #   if i:
-  #      total_count += 1 
+        
 
 percent_redirected = int(redirection_codes)/int(total_count)*100
 percent_client_errors = int(client_errors)/int(total_count)*100
