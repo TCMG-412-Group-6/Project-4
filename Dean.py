@@ -24,7 +24,6 @@ if not exists('log_copy.log'):
 
 ##trying regex
 #line = 'local - - [24/Oct/1994:13:41:41 -0600] "GET index.html HTTP/1.0" 200 150'
-#regex = re.compile(r'(?:.*?)\[(.{11}):(?:.{8}) (?:.*?)\] \"(?:.{3}) (.*?) (?:.*?)\" (\d{3}) (?:\d+)')
 regex = re.compile('(?:.*?) - - \[(.{11})(?:.*?)\] \"(?:.{3}) (.*?) (?:.*?)\" (\d{3}) (?:.+)')
 #(?:arg) means non-capture group
 
@@ -35,7 +34,9 @@ codes = {}
 files = {}
 sixmonths= 0
 total_count= 0
+months={}
 
+print('Parsing log file, this may take a few moments... \n')
 ##this takes a long time to run using regex, I wonder how I can cut it down? 
 for lines in open("log_copy.log", 'r'):
     total_count+= 1
@@ -51,6 +52,14 @@ for lines in open("log_copy.log", 'r'):
     parsed_date = datetime.strptime(parse[1], '%d/%b/%Y').date()
     parsed_filename = parse[2]
     parsed_code = parse[3]
+
+    #Since the log files start in Oct 1994 rather than Jan 1995,
+    #Trying this in order to bypass the problem of combining Oct thru Dec 1994 with 1995 results
+    cut_date = datetime.strftime(parsed_date, '%b %Y')
+    if cut_date in months:
+        months[cut_date]+=1
+    else:
+        months[cut_date]=1
 
     if parsed_date in dates:
         dates[parsed_date]+=1
@@ -75,68 +84,80 @@ for lines in open("log_copy.log", 'r'):
 
 
 ## There absolutely has to be a better way to sort and iterate the monthly logs
-## The repeat execution protection I tried to implement breaks the writing process - only 1 entry per file, so commented out for now.
-    #if not exists('1 Jan log.log'):
-        #if datetime(year=1995, month=1, day=1).date() <= parsed_date < datetime(year=1995, month=2, day=1).date():
-            #f = open('1 Jan log.log', 'w')
-            #f.write(lines)
-    #if not exists('2 Feb log.log'):
-        #if datetime(year=1995, month=2, day=1).date() <= parsed_date < datetime(year=1995, month=3, day=1).date():
-            #f = open('2 Feb log.log', 'w')
-            #f.write(lines)
-    #if not exists('3 Mar log.log'):
-        #if datetime(year=1995, month=3, day=1).date() <= parsed_date < datetime(year=1995, month=4, day=1).date():
-            #f = open('3 Mar log.log', 'w')
-            #f.write(lines)
-    #if not exists('4 Apr log.log'):
-        #if datetime(year=1995, month=4, day=1).date() <= parsed_date < datetime(year=1995, month=5, day=1).date():
-            #f = open('4 Apr log.log', 'w')
-            #f.write(lines)
-    #if not exists('5 May log.log'):
-        #if datetime(year=1995, month=5, day=1).date() <= parsed_date < datetime(year=1995, month=6, day=1).date():
-            #f = open('5 May log.log', 'w')
-            #f.write(lines)
-    #if not exists('6 Jun log.log'):
-        #if datetime(year=1995, month=6, day=1).date() <= parsed_date < datetime(year=1995, month=7, day=1).date():
-            #f = open('6 Jun log.log', 'w')
-            #f.write(lines)
-    #if not exists('7 Jul log.log'):
-        #if datetime(year=1995, month=7, day=1).date() <= parsed_date < datetime(year=1995, month=8, day=1).date():
-            #f = open('7 Jul log.log', 'w')
-            #f.write(lines)
-    #if not exists('8 Aug log.log'):
-        #if datetime(year=1995, month=8, day=1).date() <= parsed_date < datetime(year=1995, month=9, day=1).date():
-            #f = open('8 Aug log.log', 'w')
-            #f.write(lines)
-    #if not exists('9 Sep log.log'):
-        #if datetime(year=1995, month=9, day=1).date() <= parsed_date < datetime(year=1995, month=10, day=1).date():
-            #f = open('9 Sep log.log', 'w')
-            #f.write(lines)
-    #if not exists('10 Oct log.log'):
-        #if datetime(year=1995, month=10, day=1).date() <= parsed_date < datetime(year=1995, month=11, day=1).date():
-            #f = open('10 Oct log.log', 'w')
-            #f.write(lines)
+## I would ideally like there to be protection against doing this each time the program is executed
+
+    #if datetime(year=1994, month=10, day=1).date() <= parsed_date < datetime(year=1994, month=11, day=1).date():
+        #f = open('1 Oct 1994.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1994, month=11, day=1).date() <= parsed_date < datetime(year=1994, month=12, day=1).date():
+        #f = open('2 Nov 1994.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1994, month=12, day=1).date() <= parsed_date < datetime(year=1995, month=1, day=1).date():
+        #f = open('3 Dec 1994.log', 'w')
+        #f.write(lines,'\n')        
+
+    #if datetime(year=1995, month=1, day=1).date() <= parsed_date < datetime(year=1995, month=2, day=1).date():
+        #f = open('4 Jan log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=2, day=1).date() <= parsed_date < datetime(year=1995, month=3, day=1).date():
+        #f = open('5 Feb log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=3, day=1).date() <= parsed_date < datetime(year=1995, month=4, day=1).date():
+        #f = open('6 Mar log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=4, day=1).date() <= parsed_date < datetime(year=1995, month=5, day=1).date():
+        #f = open('7 Apr log.log', 'w')
+         #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=5, day=1).date() <= parsed_date < datetime(year=1995, month=6, day=1).date():
+        #f = open('8 May log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=6, day=1).date() <= parsed_date < datetime(year=1995, month=7, day=1).date():
+        #f = open('9 Jun 1995 log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=7, day=1).date() <= parsed_date < datetime(year=1995, month=8, day=1).date():
+        #f = open('10 Jul log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=8, day=1).date() <= parsed_date < datetime(year=1995, month=9, day=1).date():
+        #f = open('11 Aug 1995 log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=9, day=1).date() <= parsed_date < datetime(year=1995, month=10, day=1).date():
+        #f = open('12 Sep 1995 log.log', 'w')
+        #f.write(lines,'\n')
+
+    #if datetime(year=1995, month=10, day=1).date() <= parsed_date < datetime(year=1995, month=11, day=1).date():
+        #f = open('13 Oct log.log', 'w')
+        #f.write(lines,'\n')
     
-    
-
-
-
-
 top_file = max(files, key=files.get)
 top_file_value = max(files.values())
+bottom_file = min(files, key=files.get)
+bottom_file_value = min(files.values())
 total_fails = codes['400'] + codes['401'] + codes['403'] + codes['404']
 total_redi = codes['302'] + codes['304']
 percent_fail = float(total_fails)/float(total_count) * 100
 percent_redi = float(total_redi)/float(total_count) * 100
 
+
 print("Total Requests Made 6 months starting April 11th, 1995 - Octobober 11th 1995: ", sixmonths)
-print("Total Requests from the logfile: ", total_count)
+print("Total Requests from the logfile: ", total_count,'\n')
+print("Requests made by month:\n",months,"\n")
 #print(codes)
 print("Total Requests that ended in Failure codes:", total_fails)
 print("Percentage of Requests that failed:", percent_fail,'%\n')
 print("Total Requests that ended in Redirects:", total_redi)
 print("Percentage of Requests that redirected:", percent_redi,'%\n')
 print('Top requested file:',top_file,'with',top_file_value,'requests')
+print('Least requested file:',bottom_file,'with',bottom_file_value,'requests')
 
 
 
